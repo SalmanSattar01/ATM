@@ -1,89 +1,131 @@
 #! /usr/bin/env node
 import inquirer from "inquirer";
-// Define the initial balance
-let balance = 1000;
-// Function to display the ATM options menu
-function displayOptions() {
-    console.log("ATM Options:");
-    console.log("1. Check Balance");
-    console.log("2. Deposit");
-    console.log("3. Withdraw");
-    console.log("4. Exit");
-}
-// Function to check balance
-function checkBalance() {
-    console.log(`Your current balance is $${balance}`);
-}
-// Function to deposit money
-function deposit() {
-    inquirer.prompt({
-        type: 'number',
-        name: 'amount',
-        message: 'Enter the amount to deposit:'
-    }).then(answer => {
-        const amount = answer.amount;
-        if (amount > 0) {
-            balance += amount;
-            console.log(`Deposit successful. Your new balance is $${balance}`);
-        }
-        else {
-            console.log("Invalid amount. Please enter a positive number.");
-        }
-        displayOptions();
-        selectOption();
-    });
-}
-// Function to withdraw money
-function withdraw() {
-    inquirer.prompt({
-        type: 'number',
-        name: 'amount',
-        message: 'Enter the amount to withdraw:'
-    }).then(answer => {
-        const amount = answer.amount;
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
-            console.log(`Withdrawal successful. Your new balance is $${balance}`);
-        }
-        else if (amount > balance) {
-            console.log("Insufficient funds.");
-        }
-        else {
-            console.log("Invalid amount. Please enter a positive number.");
-        }
-        displayOptions();
-        selectOption();
-    });
-}
-// Function to select ATM option
-function selectOption() {
-    inquirer.prompt({
-        type: 'number',
-        name: 'option',
-        message: 'Enter option number:'
-    }).then(answer => {
-        const option = answer.option;
-        switch (option) {
-            case 1:
-                checkBalance();
-                break;
-            case 2:
-                deposit();
-                break;
-            case 3:
-                withdraw();
-                break;
-            case 4:
-                console.log("Exiting. Thank you!");
-                process.exit();
-            default:
-                console.log("Invalid option. Please select a valid option.");
-                displayOptions();
-                selectOption();
-        }
-    });
-}
-// // Start the ATM
+let myBalance = 2000;
+let myPin = 1234;
 console.log("Welcome to the ATM!");
-displayOptions();
-selectOption();
+let pinAnswer = await inquirer.prompt([
+    {
+        name: "pin",
+        message: "Please Enter Your Pin",
+        type: "number",
+    },
+]);
+if (pinAnswer.pin === myPin) {
+    console.log("Correct Pin Code");
+    let operationAns = await inquirer.prompt([
+        {
+            name: "operation",
+            message: "Please Select Option",
+            type: "list",
+            choices: ["Withdraw", "Check Balance", "Deposit", "Exit"],
+        },
+    ]);
+    if (operationAns.operation === "Withdraw") {
+        let operationAns = await inquirer.prompt([
+            {
+                name: "operation",
+                message: "please select option",
+                type: "list",
+                choices: ["Withdraw Manually", "Fast Cash"],
+            },
+        ]);
+        if (operationAns.operation === "Withdraw Manually") {
+            let withdrawAns = await inquirer
+                .prompt([
+                {
+                    name: "withdraw",
+                    message: " Please Enter Your Amount",
+                    type: "number",
+                },
+            ])
+                .then((answer) => {
+                const withdraw = answer.withdraw;
+                if (withdraw > 0 && withdraw <= myBalance) {
+                    myBalance -= withdraw;
+                    console.log(`Withdrawal successful. Your new balance is $${myBalance}`);
+                }
+                else if (withdraw > myBalance) {
+                    console.log("Insufficient funds.");
+                }
+                else {
+                    console.log("Invalid amount. Please enter a positive number.");
+                }
+            });
+        }
+        else {
+            let operationAns = await inquirer.prompt([
+                {
+                    name: "operation",
+                    message: "Please Select Option",
+                    type: "list",
+                    choices: ["500", "1000", "5000", "10000"],
+                },
+            ]);
+            if (operationAns.operation === "500") {
+                if (500 > 0 && 500 <= myBalance) {
+                    myBalance -= 500;
+                    console.log(`Withdrawal successful. Your new balance is $${myBalance}`);
+                }
+                else if (500 > myBalance) {
+                    console.log("Insufficient funds.");
+                }
+            }
+            else if (operationAns.operation === "1000") {
+                if (1000 > 0 && 1000 <= myBalance) {
+                    myBalance -= 1000;
+                    console.log(`Withdrawal successful. Your new balance is $${myBalance}`);
+                }
+                else if (1000 > myBalance) {
+                    console.log("Insufficient funds.");
+                }
+            }
+            else if (operationAns.operation === "5000") {
+                if (5000 > 0 && 5000 <= myBalance) {
+                    myBalance -= 5000;
+                    console.log(`Withdrawal successful. Your new balance is $${myBalance}`);
+                }
+                else if (5000 > myBalance) {
+                    console.log("Insufficient funds.");
+                }
+            }
+            else if (operationAns.operation === "10000") {
+                if (10000 > 0 && 10000 <= myBalance) {
+                    myBalance -= 10000;
+                    console.log(`Withdrawal successful. Your new balance is $${myBalance}`);
+                }
+                else if (10000 > myBalance) {
+                    console.log("Insufficient funds.");
+                }
+            }
+        }
+    }
+    else if (operationAns.operation === "Check Balance") {
+        console.log(`your balcne is ${myBalance}`);
+    }
+    else if (operationAns.operation === "Deposit") {
+        let depositAns = await inquirer
+            .prompt([
+            {
+                name: "deposit",
+                message: " Please Enter Your Amount",
+                type: "number",
+            },
+        ])
+            .then((answer) => {
+            const deposit = answer.deposit;
+            if (deposit > 0) {
+                myBalance += deposit;
+                console.log(`Deposit successful. Your new balance is $${myBalance}`);
+            }
+            else {
+                console.log("Invalid amount. Please enter a positive number.");
+            }
+        });
+    }
+    else if (operationAns.operation === "Exit") {
+        console.log(`Thanks For Using ATM Machine`);
+    }
+}
+else {
+    console.log(" your pin is in correct");
+}
