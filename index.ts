@@ -90,3 +90,52 @@ function selectOption() {
 console.log("Welcome to the ATM!");
 displayOptions();
 selectOption();
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+import inquirer from "inquirer";
+let myBalance = 2000;
+let myPin = 1234;
+
+Let pinAnswer = await inquirer.prompt(
+    [
+        {
+            name:"pin",
+            message: "enter your pin",
+            type: "number"
+        }
+    ]
+);
+
+if (pinAnswer.pin === myPin){
+    console.log("correct pin code");
+    
+let operationAns = await inquirer.prompt(
+    [
+        {
+            name: "operation",
+            message: "please select option",
+            type: "list",
+            choices: ["withdraw", "check balance"]
+        }
+    ]
+);
+
+if (operationAns === "withdraw") {
+    let amountAns = await inquirer.prompt(
+        [
+            {
+                name: "amount",
+                message: "enter your amount",
+                type: "number"
+            }
+        ]
+    );
+
+
+
+    
+        
+
+
+
+
